@@ -1,0 +1,10 @@
+1	NKcells_1
+2	NKcells_0
+3	NKcells_1
+4	Tcells
+5	NKcells_0
+6	NKcells_0
+7	Myeloid
+8	NKcells_1
+9	NKcells_0
+10	NKcells_0
