@@ -14,19 +14,19 @@
 
 ## Table of Contents
 
--   [CytoTalk](#cytotalk)
-    -   [Table of Contents](#table-of-contents)
-    -   [Overview](#overview)
-        -   [Background](#background)
-    -   [Getting Started](#getting-started)
-        -   [Prerequisites](#prerequisites)
-        -   [Installation](#installation)
-        -   [Preparation](#preparation)
-        -   [Running CytoTalk](#running-cytotalk)
-    -   [Update Log](#update-log)
-    -   [Citing CytoTalk](#citing-cytotalk)
-    -   [References](#references)
-    -   [Contact](#contact)
+- [CytoTalk](#cytotalk)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+    - [Background](#background)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Preparation](#preparation)
+    - [Running CytoTalk](#running-cytotalk)
+  - [Update Log](#update-log)
+  - [Citing CytoTalk](#citing-cytotalk)
+  - [References](#references)
+  - [Contact](#contact)
 
 ## Overview
 
@@ -91,7 +91,7 @@ If you have `devtools` installed, you can use the `install_github`
 function directly on this repository (under development):
 
 ``` r
-devtools::install_github("tanlabcode/CytoTalk", ref = "feature_RcallPy")
+devtools::install_github("heeep/CytoTalk_new", ref = "feature_RcallPy")
 ```
 
 ### Preparation
@@ -111,27 +111,37 @@ structure:
    └─ scRNAseq_TCells.csv
 ```
 
+The example data can be downloaded in
+[github](https://github.com/huBioinfo/CytoTalk/blob/master/CytoTalk_package_v3.1.0.zip)
 <br />
 
 ⚠ **IMPORTANT** ⚠
 
 Notice all of these files have the prefix “scRNAseq\_” and the extension
-“.csv”; CytoTalk looks for files matching this pattern, so be sure to
-replicate it with your filenames. Let’s try reading in the folder:
+“.csv”; CytoTalknew looks for files matching this pattern, so be sure to
+replicate it with your filenames.
+
+Let’s try reading in the folder.Due to file size constraints, we have
+placed a simplified example dataset called extdata in the inst folder of
+the CytoTalknew package. This dataset is provided to help users
+understand how to use the read_matrix_folder function. It includes only
+the following two files:
 
 ``` r
-dir_in <- "~/Tan-Lab/scRNAseq-data"
-lst_scrna <- CytoTalk::read_matrix_folder(dir_in)
+#> ── scRNAseq-data
+#>    ├─ scRNAseq_Fibroblasts.csv
+#>    ├─ scRNAseq_LuminalEpithelialCells.csv
+```
+
+``` r
+dir_in <- system.file("extdata", package = "CytoTalknew")
+lst_scrna <- CytoTalknew::read_matrix_folder(dir_in)
 table(lst_scrna$cell_types)
 ```
 
-``` console
- BasalCells                 BCells       EndothelialCells 
-        392                    743                    251 
-Fibroblasts LuminalEpithelialCells            Macrophages 
-        700                    459                    186 
-     TCells 
-       1750
+``` r
+#>  Fibroblasts             LuminalEpithelialCells        
+#>  200                     200                    
 ```
 
 The outputted names are all the cell types we can choose to run CytoTalk
@@ -139,48 +149,26 @@ against. Alternatively, we can use CellPhoneDB-style input, where one
 file is our data matrix, and another file maps cell types to columns
 (i.e. metadata):
 
-``` txt
-── scRNAseq-data-cpdb
-   ├─ sample_counts.txt
-   └─ sample_meta.txt
+``` r
+#> ── scRNAseq-data-cpdb
+#>    ├─ sample_counts.txt
+#>    └─ sample_meta.txt
 ```
 
 There is no specific pattern required for this type of input, as both
 filepaths are required for the function:
 
 ``` r
-fpath_mat <- "~/Tan-Lab/scRNAseq-data-cpdb/sample_counts.txt"
-fpath_meta <- "~/Tan-Lab/scRNAseq-data-cpdb/sample_meta.txt"
-lst_scrna <- CytoTalk::read_matrix_with_meta(fpath_mat, fpath_meta)
+base_path <- cytotalknew::get_example_data()
+fpath_mat <- file.path(base_path, "sample_counts.txt")
+fpath_meta <- file.path(base_path, "sample_meta.txt")
+lst_scrna <- cytotalknew::read_matrix_with_meta(fpath_mat, fpath_meta)
 table(lst_scrna$cell_types)
 ```
 
-``` console
-Myeloid NKcells_0 NKcells_1    Tcells 
-      1         5         3         1
-```
-
-If you have a `SingleCellExperiment` object with `logcounts` and
-`colnames` loaded onto it, you can create an input list like so:
-
 ``` r
-lst_scrna <- CytoTalk::from_single_cell_experiment(sce)
-```
-
-Finally, you can compose your own input list quite easily, simply have a
-matrix of either count or transformed data and a vector detailing the
-cell types of each column:
-
-``` r
-mat <- matrix(rpois(90, 5), ncol = 3)
-cell_types <- c("TypeA", "TypeB", "TypeA")
-lst_scrna <- CytoTalk:::new_named_list(mat, cell_types)
-table(lst_scrna$cell_types)
-```
-
-``` console
-TypeA TypeB 
-    2     1
+#> Myeloid NKcells_0 NKcells_1    Tcells 
+#>       1         5         3         1
 ```
 
 ### Running CytoTalk
@@ -189,15 +177,15 @@ Without further ado, let’s run CytoTalk!
 
 ``` r
 # read in data folder
-dir_in <- "~/Tan-Lab/scRNAseq-data"
-lst_scrna <- CytoTalk::read_matrix_folder(dir_in)
+dir_in <- system.file("extdata", package = "CytoTalknew")
+lst_scrna <- CytoTalknew::read_matrix_folder(dir_in)
 
 # set required parameters
 type_a <- "Fibroblasts"
 type_b <- "LuminalEpithelialCells"
 
 # run CytoTalk process
-results <- CytoTalk::run_cytotalk(lst_scrna, type_a, type_b)
+results <- CytoTalknew::run_cytotalk(lst_scrna, type_a, type_b)
 ```
 
 ``` console
@@ -281,9 +269,8 @@ from the PCST. Additionally, the `results$pathways$df_pval` item
 contains a summary of the neighborhood size for each pathway, along with
 theoretical (Gamma distribution) test values that are found by
 contrsting the found pathway to random pathways from the integrated
-network.
-![p](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;p "p")-values
-for node prize, edge cost, and potential are calculated separately.
+network. $p$-values for node prize, edge cost, and potential are
+calculated separately.
 
 ## Update Log
 
@@ -337,17 +324,17 @@ to the user manual inside the package.
 
 ## Citing CytoTalk
 
--   Hu Y, Peng T, Gao L, Tan K. CytoTalk: *De novo* construction of
-    signal transduction networks using single-cell transcriptomic data.
-    ***Science Advances***, 2021, 7(16): eabf1356.
+- Hu Y, Peng T, Gao L, Tan K. CytoTalk: *De novo* construction of signal
+  transduction networks using single-cell transcriptomic data.
+  ***Science Advances***, 2021, 7(16): eabf1356.
 
-    <https://advances.sciencemag.org/content/7/16/eabf1356>
+  <https://advances.sciencemag.org/content/7/16/eabf1356>
 
 ## References
 
--   Shannon P, et al. Cytoscape: a software environment for integrated
-    models of biomolecular interaction networks. *Genome Research*,
-    2003, 13: 2498-2504.
+- Shannon P, et al. Cytoscape: a software environment for integrated
+  models of biomolecular interaction networks. *Genome Research*, 2003,
+  13: 2498-2504.
 
 ## Contact
 

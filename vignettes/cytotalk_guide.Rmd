@@ -71,11 +71,11 @@ The example data can be downloaded in [github](https://github.com/huBioinfo/Cyto
 ⚠ **IMPORTANT** ⚠
 
 Notice all of these files have the prefix “scRNAseq\_” and the extension
-“.csv”; CytoTalk looks for files matching this pattern, so be sure to
+“.csv”; CytoTalknew looks for files matching this pattern, so be sure to
 replicate it with your filenames. 
 
 
-Let’s try reading in the folder.Due to file size constraints, we have placed a simplified example dataset called extdata in the inst folder of the CytoTalk package. This dataset is provided to help users understand how to use the read_matrix_folder function. It includes only the following two files:
+Let’s try reading in the folder.Due to file size constraints, we have placed a simplified example dataset called extdata in the inst folder of the CytoTalknew package. This dataset is provided to help users understand how to use the read_matrix_folder function. It includes only the following two files:
 ```{r}
 #> ── scRNAseq-data
 #>    ├─ scRNAseq_Fibroblasts.csv
@@ -83,8 +83,8 @@ Let’s try reading in the folder.Due to file size constraints, we have placed a
 ```
 
 ``` r
-dir_in <- system.file("extdata", package = "mycytotalk")
-lst_scrna <- CytoTalk::read_matrix_folder(dir_in)
+dir_in <- system.file("extdata", package = "CytoTalknew")
+lst_scrna <- CytoTalknew::read_matrix_folder(dir_in)
 table(lst_scrna$cell_types)
 ```
 
@@ -109,10 +109,10 @@ There is no specific pattern required for this type of input, as both
 filepaths are required for the function:
 
 ``` r
-base_path <- mycytotalk::get_example_data()
+base_path <- cytotalknew::get_example_data()
 fpath_mat <- file.path(base_path, "sample_counts.txt")
 fpath_meta <- file.path(base_path, "sample_meta.txt")
-lst_scrna <- mycytotalk::read_matrix_with_meta(fpath_mat, fpath_meta)
+lst_scrna <- cytotalknew::read_matrix_with_meta(fpath_mat, fpath_meta)
 table(lst_scrna$cell_types)
 ```
 
@@ -127,15 +127,15 @@ Without further ado, let's run CytoTalk!
 
 ``` r
 # read in data folder
-dir_in <- system.file("extdata", package = "mycytotalk")
-lst_scrna <- mycytotalk::read_matrix_folder(dir_in)
+dir_in <- system.file("extdata", package = "CytoTalknew")
+lst_scrna <- CytoTalknew::read_matrix_folder(dir_in)
 
 # set required parameters
 type_a <- "Fibroblasts"
 type_b <- "LuminalEpithelialCells"
 
 # run CytoTalk process
-results <- CytoTalk::run_cytotalk(lst_scrna, type_a, type_b)
+results <- CytoTalknew::run_cytotalk(lst_scrna, type_a, type_b)
 ```
 
 ```{r}
