@@ -91,7 +91,7 @@ If you have `devtools` installed, you can use the `install_github`
 function directly on this repository (under development):
 
 ``` r
-devtools::install_github("heeep/CytoTalk_new", ref = "feature_RcallPy")
+devtools::install_github("heeep/CytoTalk_new")
 ```
 
 ### Preparation
