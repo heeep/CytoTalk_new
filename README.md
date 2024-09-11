@@ -73,7 +73,7 @@ run the commands below in the *R* (version 4.1.3) console if you have
 
 ``` r
 library(reticulate)  # To install and call Python modules from R.
-conda_create(envname = "r_reticulate_CytoTalk", python_version = "3.7.3")  # Create a new Conda environment to facilitate the Python module installation.
+conda_create(envname = "r_reticulate_CytoTalk", python_version = "3.8")  # Create a new Conda environment to facilitate the Python module installation.
 conda_install(envname = "r_reticulate_CytoTalk", "pybind11")  # Install two necessary Python modules for correctly compiling and using the "pcst_fast" Python module.
 conda_install(envname = "r_reticulate_CytoTalk", "numpy")
 conda_install(envname = "r_reticulate_CytoTalk", "git+https://github.com/fraenkel-lab/pcst_fast.git", pip = TRUE) # To install the "pcst_fast" module.
