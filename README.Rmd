@@ -184,14 +184,11 @@ lst_scrna <- CytoTalknew::read_matrix_folder(dir_in)
 
 #load required data
 
-## load lrp_human dataset
-``` r
+
 load(system.file("data", "lrp_human.rda", package = "CytoTalknew"))
-```
-## load pcg_human dataset
-```r
+
 load(system.file("data", "pcg_human.rda", package = "CytoTalknew"))
-```
+
 
 # set required parameters
 type_a <- "Fibroblasts"

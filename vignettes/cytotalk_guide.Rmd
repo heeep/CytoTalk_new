@@ -130,6 +130,14 @@ Without further ado, let's run CytoTalk!
 dir_in <- system.file("extdata", package = "CytoTalknew")
 lst_scrna <- CytoTalknew::read_matrix_folder(dir_in)
 
+
+
+#load required data
+
+load(system.file("data", "lrp_human.rda", package = "CytoTalknew"))
+
+load(system.file("data", "pcg_human.rda", package = "CytoTalknew"))
+
 # set required parameters
 type_a <- "Fibroblasts"
 type_b <- "LuminalEpithelialCells"
